@@ -5,13 +5,13 @@ A Python module for converting a Jira ticket number and title to a git branch na
 ## Usage
 
 ```bash
-JiraToGitBranch.py <Jira ticket number> <Jira ticket title>
+JiraToGitBranch.py <Jira ticket number>
 ```
 
 Example:
 
 ```bash
-JiraToGitBranch.py ABC-1234 This is a Jira ticket title
+JiraToGitBranch.py ABC-1234
 ```
 
 Output:
