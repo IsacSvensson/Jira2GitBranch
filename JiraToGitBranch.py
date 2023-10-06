@@ -22,7 +22,7 @@ def GetJiraInstance() -> JIRA:
     """
     Returns an authenticated JIRA instance using the server URL and PAT token from the config module.
     """
-    jira = JIRA(config.JIRA_SERVER_URL, token_auth=(config.PAT_TOKEN))
+    jira = JIRA(config.JIRA_SERVER_URL, token_auth=(config.JIRA_PAT_TOKEN))
 
     return jira
 
