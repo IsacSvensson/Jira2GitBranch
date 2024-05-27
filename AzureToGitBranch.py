@@ -1,4 +1,4 @@
-"""
+﻿"""
 A module for converting an Azure DevOps work item ID and title to a git branch name.
 
 Usage: Azure2GitBranch.py <Azure DevOps work item ID>
@@ -53,7 +53,7 @@ def ConvertAzureDevOpsWorkItemToGitBranchName(workItemId: str) -> str:
     work_item_title = work_item.fields['System.Title']
 
     # Replace invalid characters with hyphens
-    invalid_chars = ['\\', '/', ':', '*', '?', '"', '<', '>', '|', ' ']
+    invalid_chars = ['\\', '/', ':', '*', '?', '"', '<', '>', '|', ' ', '.']
     work_item_title = work_item_title.replace(' - ', '-')
     for char in invalid_chars:
         work_item_title = work_item_title.replace(char, '_')
@@ -61,15 +61,30 @@ def ConvertAzureDevOpsWorkItemToGitBranchName(workItemId: str) -> str:
     for i in range(2, 5).__reversed__():
         work_item_title = work_item_title.replace('_'*i , '_')
 
+    work_item_title = work_item_title.replace('_-_', '-')
+
+    # replace åäöÅÄÖ with aaoÅÄÖ
+    letters = {'å': 'a', 'ä': 'a', 'ö': 'o', 'Å': 'A', 'Ä': 'A', 'Ö': 'O'}
+    for letter in letters:
+        work_item_title = work_item_title.replace(letter, letters[letter]) 
+
+    # remove trailing hyphens and underscores
+    work_item_title = work_item_title.strip('_-')
+
+
     # Return the git branch name
     return f"\n{workItemId}-{work_item_title}\n"
 
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: Azure2GitBranch.py <Azure DevOps work item ID>")
+        print("\nAzure2Branch v1.0\nIsac Svensson")
+        print('-' * 30)
+        print("Usage: Azure2Branch <Azure DevOps work item ID>")
+        print("Example: Azure2Branch 12345")
+        print("Output: 12345-This-is-an-Azure-DevOps-work-item-title\n")
         sys.exit(1)
 
     work_item_id = sys.argv[1]
     git_branch_name = ConvertAzureDevOpsWorkItemToGitBranchName(work_item_id)
-    print(git_branch_name)
+    print(git_branch_name.strip())
